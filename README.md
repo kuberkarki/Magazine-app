@@ -1,4 +1,4 @@
-# LEDERNYTT
+# MAGAZINE APP
 
 A MAGAZINE project.
 
@@ -13,7 +13,8 @@ This project is a learning for a Flutter application.
 - cached images
 - shared prefrences
 - login using api
-- cache http
+- download
+- unarchive
 - cache json to db
 
 A few resources to get you started if this is your first Flutter project:
