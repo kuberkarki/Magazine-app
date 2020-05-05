@@ -127,7 +127,7 @@ class _MagazinePageState extends State<MagazinePage> {
           decoration: InputDecoration(
             contentPadding: EdgeInsets.all(15.0),
             prefixIcon: Icon(Icons.search, color: Colors.black),
-            hintText: 'Filter by name or email',
+            hintText: 'Soke...',
           ),
           onChanged: (string) {
             _debouncer.run(() {
