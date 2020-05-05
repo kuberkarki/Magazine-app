@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../common/config.dart';
 import '../providers/magazine_api_provider.dart';
 import '../services/db_provider.dart';
@@ -14,40 +16,55 @@ class MagazinePage extends StatefulWidget {
   _MagazinePageState createState() => _MagazinePageState();
 }
 
+class Debouncer {
+  final int milliseconds;
+  VoidCallback action;
+  Timer _timer;
+
+  Debouncer({this.milliseconds});
+
+  run(VoidCallback action) {
+    if (null != _timer) {
+      _timer.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
+}
+
 class _MagazinePageState extends State<MagazinePage> {
-  List<Magazine> mag, mag1;
+  final _debouncer = Debouncer(milliseconds: 500);
+  List<Magazine> mag, mag1, filteredmag;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    if(await checkInternet()==false){
+    if (await checkInternet() == false) {
       Fluttertoast.showToast(
-          msg: "Sjekk Internettforbindelse",
-          toastLength: Toast.LENGTH_LONG,
-        );
+        msg: "Sjekk Internettforbindelse",
+        toastLength: Toast.LENGTH_LONG,
+      );
       _refreshController.refreshCompleted();
       return;
-
     }
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
-     var apiProvider = MagazineApiProvider(); // Load to DB
+    var apiProvider = MagazineApiProvider(); // Load to DB
     await apiProvider.getAllMagazines();
     mag1 = await DBProvider.db.getAllMagazines();
     if (mounted)
       setState(() {
         mag = mag1;
+        filteredmag = mag;
       });
-      _refreshController.refreshCompleted();
+    _refreshController.refreshCompleted();
     // if failed,use refreshFailed()
-    
   }
 
   void _onLoading() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-   
+
     _refreshController.loadComplete();
   }
 
@@ -68,10 +85,12 @@ class _MagazinePageState extends State<MagazinePage> {
       var apiProvider = MagazineApiProvider(); // Load to DB
       await apiProvider.getAllMagazines();
       mag1 = await DBProvider.db.getAllMagazines();
+      filteredmag = mag1;
     }
 
     setState(() {
       mag = mag1;
+      filteredmag = mag;
     });
   }
 
@@ -102,21 +121,48 @@ class _MagazinePageState extends State<MagazinePage> {
   // }
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        header: WaterDropHeader(),
-        onRefresh: _onRefresh,
-        onLoading: _onLoading,
-        child: mag == null
-            ? Center(child: Text('Wait...'))
-            : ListView.builder(
-                padding: EdgeInsets.all(10.0),
-                itemCount: mag.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return MagazineCard(mag: mag[index]);
-                },
-              ),
-      );
+    return Column(
+      children: [
+        TextField(
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(15.0),
+            prefixIcon: Icon(Icons.search, color: Colors.black),
+            hintText: 'Filter by name or email',
+          ),
+          onChanged: (string) {
+            _debouncer.run(() {
+              setState(() {
+                filteredmag = mag
+                    .where((u) => (u.name
+                            .toLowerCase()
+                            .contains(string.toLowerCase()) ||
+                        u.article.toLowerCase().contains(string.toLowerCase()) ||
+                        (u.content!=null && u.content.toLowerCase().contains(string.toLowerCase()))
+                        ))
+                    .toList();
+              });
+            });
+          },
+        ),
+        Expanded(
+          child: SmartRefresher(
+            controller: _refreshController,
+            enablePullDown: true,
+            header: WaterDropHeader(),
+            onRefresh: _onRefresh,
+            onLoading: _onLoading,
+            child: mag == null
+                ? Center(child: Text('Wait...'))
+                : ListView.builder(
+                    padding: EdgeInsets.all(10.0),
+                    itemCount: filteredmag.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MagazineCard(mag: filteredmag[index]);
+                    },
+                  ),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -68,7 +68,7 @@ class DBProvider {
     // print(magDetail);
     List<Map> maps = await db.query('MagazineDetail',
         columns: ['id'], where: 'id = ?', whereArgs: [id]);
-    print(maps.length);
+    // print(maps.length);
     if (maps.length > 0) {
       res = await db.update('MagazineDetail', magDetail,
           where: 'id = ?', whereArgs: [id]);
@@ -126,10 +126,10 @@ class DBProvider {
 
   Future<List<Magazine>> getAllMagazines() async {
     final db = await database;
-    var res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked as isLiked,MagazineDetail.isDownloaded as isDownloaded,Magazine.article FROM Magazine LEFT JOIN MagazineDetail ON Magazine.id=MagazineDetail.id ORDER BY Magazine.id DESC");
-    print(res.length);
+    var res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked as isLiked,MagazineDetail.isDownloaded as isDownloaded,Magazine.article,Magazine.content FROM Magazine LEFT JOIN MagazineDetail ON Magazine.id=MagazineDetail.id ORDER BY Magazine.id DESC");
+    // print(res.length);
     if(res.length==0){ // TODO:Don't know why it didn't show while I just insert so I called it again
-      res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked as isLiked,MagazineDetail.isDownloaded as isDownloaded,Magazine.article FROM Magazine LEFT JOIN MagazineDetail ON Magazine.id=MagazineDetail.id ORDER BY Magazine.id DESC");
+      res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked as isLiked,MagazineDetail.isDownloaded as isDownloaded,Magazine.article,Magazine.content FROM Magazine LEFT JOIN MagazineDetail ON Magazine.id=MagazineDetail.id ORDER BY Magazine.id DESC");
 
     }
     // List<Magazine> list = res.isNotEmpty ? await MagazinesRepo.getMagazines() : [];
@@ -141,7 +141,7 @@ class DBProvider {
 
   Future<List<Magazine>> getFavouriteMagazines() async {
     final db = await database;
-    final res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked,MagazineDetail.isDownloaded,Magazine.article FROM Magazine JOIN MagazineDetail ON Magazine.id=MagazineDetail.id AND isLiked=1 ORDER BY Magazine.id DESC");
+    final res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked,MagazineDetail.isDownloaded,Magazine.article,Magazine.content FROM Magazine JOIN MagazineDetail ON Magazine.id=MagazineDetail.id AND isLiked=1 ORDER BY Magazine.id DESC");
 
        List<Magazine> list = res.isNotEmpty ?res.map((c) => Magazine.fromJsonWithDetal(c)).toList() : [];
 
@@ -151,7 +151,7 @@ class DBProvider {
 
   Future<List<Magazine>> getDownloadedMagazines() async {
     final db = await database;
-    final res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked,MagazineDetail.isDownloaded,Magazine.article FROM Magazine JOIN MagazineDetail ON Magazine.id=MagazineDetail.id AND isDownloaded=1 ORDER BY Magazine.id DESC");
+    final res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked,MagazineDetail.isDownloaded,Magazine.article,Magazine.content FROM Magazine JOIN MagazineDetail ON Magazine.id=MagazineDetail.id AND isDownloaded=1 ORDER BY Magazine.id DESC");
 
     List<Magazine> list = res.isNotEmpty ?res.map((c) => Magazine.fromJsonWithDetal(c)).toList() : [];
 

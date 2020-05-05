@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-import 'package:LEDERNYTT/forgot.dart';
+import 'package:LEDERNYTT/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import 'common/config.dart';
-import 'main.dart';
+// import 'main.dart';
 
-class LoginPage extends StatefulWidget {
+class ForgotPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _ForgotPageState createState() => _ForgotPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ForgotPageState extends State<ForgotPage> {
   bool _isLoading = false;
 
   @override
@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  signIn(String email, String pass) async {
+  void sendForgot(String email) async {
     if (await checkInternet() == false) {
       Fluttertoast.showToast(
         msg: "Sjekk Internettforbindelse",
@@ -49,22 +49,11 @@ class _LoginPageState extends State<LoginPage> {
       });
       return null;
     }
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // print(email);
-    Map data = {'user_name': email, 'password': pass};
-    if (email == 'kuber' && pass == 'karki') {
-      setState(() {
-        _isLoading = false;
-      });
-      await sharedPreferences.setString("token", 'kuberkarki1');
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => MainPage()),
-          (Route<dynamic> route) => false);
+    Map data = {'user_name': email};
 
-      return null;
-    }
-
-    var response = await http.post(apiUrl + "login", body: data);
+    var response = await http.post(apiUrl + "forgot-password", body: data);
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
@@ -79,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
 
         return null;
       }
-      if (jsonResponse['status'] != 'ok') {
+      if (jsonResponse['status'] == 'ok' || jsonResponse['status'] == 'error') {
         Fluttertoast.showToast(
           msg: jsonResponse['message'] ?? 'Error !!',
           toastLength: Toast.LENGTH_LONG,
@@ -89,15 +78,6 @@ class _LoginPageState extends State<LoginPage> {
         });
 
         return null;
-      }
-      if (jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
-        sharedPreferences.setString("token", jsonResponse['data']['token']);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => MainPage()),
-            (Route<dynamic> route) => false);
       }
     } else {
       setState(() {
@@ -120,27 +100,27 @@ class _LoginPageState extends State<LoginPage> {
               setState(() {
                 _isLoading = true;
               });
-              signIn(emailController.text, passwordController.text);
+              sendForgot(emailController.text);
             },
             elevation: 0.0,
             color: Colors.black,
-            child: Text("LOGG INN", style: TextStyle(color: Colors.white)),
+            child: Text("HENTE PASSORD", style: TextStyle(color: Colors.white)),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           ),
         ),
         SizedBox(height: 10),
         GestureDetector(
-          onTap: () async {
-             Navigator.of(context).pushAndRemoveUntil(
+          onTap: () {
+            Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                    builder: (BuildContext context) => ForgotPage()),
+                    builder: (BuildContext context) => LoginPage()),
                 (Route<dynamic> route) => false);
           },
           child: RichText(
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "Glemt passord",
+                  text: "Logg inn",
                   style: TextStyle(
                     fontSize: 14.0,
                     color: Colors.black87,
@@ -155,7 +135,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
 
   Container textSection() {
     return Container(
@@ -169,21 +148,6 @@ class _LoginPageState extends State<LoginPage> {
             decoration: InputDecoration(
               icon: Icon(Icons.person, color: Colors.grey),
               hintText: "brukernavn",
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white70)),
-              hintStyle:
-                  TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
-            ),
-          ),
-          SizedBox(height: 30.0),
-          TextFormField(
-            controller: passwordController,
-            cursorColor: Colors.black,
-            obscureText: true,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              icon: Icon(Icons.lock, color: Colors.grey),
-              hintText: "Passord",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
               hintStyle:
