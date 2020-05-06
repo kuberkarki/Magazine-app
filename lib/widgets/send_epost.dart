@@ -7,10 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 
-import '../forgot.dart';
-import '../login.dart';
-import '../main.dart';
-
 class SendEpostPage extends StatefulWidget {
   const SendEpostPage({Key key}) : super(key: key);
 

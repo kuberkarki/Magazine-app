@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
 import 'widgets/globdig_drawer.dart';
+import 'widgets/profile_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key key}) : super(key: key);
@@ -52,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (BuildContext context) => LoginPage()));
+                          builder: (BuildContext context) => ProfilePage()));
                 }),
                 _createSettingsItem(
                 icon: Icons.lock,
