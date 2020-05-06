@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +30,7 @@ class MagazineCard extends StatefulWidget {
 
 class _MagazineCardState extends State<MagazineCard> {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
-   SharedPreferences sharedPreferences ;
+  SharedPreferences sharedPreferences;
   final Magazine mag;
   String _dir;
   @override
@@ -39,10 +39,10 @@ class _MagazineCardState extends State<MagazineCard> {
     checkLoginStatus();
   }
 
-
-checkLoginStatus() async {
+  checkLoginStatus() async {
     sharedPreferences = await SharedPreferences.getInstance();
   }
+
   _MagazineCardState(this.mag);
   @override
   Widget build(BuildContext context) {
@@ -197,7 +197,7 @@ checkLoginStatus() async {
                                 'LES ONLINE',
                                 style: TextStyle(color: Colors.white),
                               ),
-                              onPressed: () async{
+                              onPressed: () async {
                                 if (await checkInternet() == false) {
                                   Fluttertoast.showToast(
                                     msg: "Sjekk Internettforbindelse",
@@ -211,7 +211,9 @@ checkLoginStatus() async {
                                       builder: (context) => WebView(
                                             selectedUrl: Uri.encodeFull(
                                                 mag.extractedFile +
-                                                    '?token'+sharedPreferences.getString("token")),
+                                                    '?token' +
+                                                    sharedPreferences
+                                                        .getString("token")),
                                             title: mag.name,
                                           )),
                                 );
@@ -266,7 +268,7 @@ checkLoginStatus() async {
     return file.writeAsBytes(req.bodyBytes);
   }
 
-  Future<File> _downloadFileWithPercentage(
+  /* Future<File> _downloadFileWithPercentage(
       String url, String filename, String dir) async {
     var httpClient = http.Client();
     var request = new http.Request('GET', Uri.parse(url));
@@ -300,4 +302,5 @@ checkLoginStatus() async {
     });
     return null;
   }
+ */
 }

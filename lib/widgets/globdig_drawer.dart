@@ -2,10 +2,10 @@ import 'package:LEDERNYTT/widgets/profile_page.dart';
 
 import '../favourite.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import '../downloaded.dart';
-import '../login.dart';
+// import '../login.dart';
 import '../main.dart';
 import '../settings.dart';
 
