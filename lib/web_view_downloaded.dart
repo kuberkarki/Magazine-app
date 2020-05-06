@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 import 'common/config.dart';
-// import 'main.dart';
 
 const kAndroidUserAgent =
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36';
@@ -50,10 +49,6 @@ class _WebViewDownloadedState extends State<WebViewDownloaded> {
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
-            // Navigator.of(context).pushAndRemoveUntil(
-            //     MaterialPageRoute(
-            //         builder: (BuildContext context) => MainPage()),
-            //     (Route<dynamic> route) => false);
           },
         ),
         title: widget.title != '' ? Text(widget.title) : Text(APPNAME),

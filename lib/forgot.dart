@@ -1,14 +1,10 @@
 import 'dart:convert';
-
 import 'package:LEDERNYTT/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-// import 'package:shared_preferences/shared_preferences.dart';
 
 import 'common/config.dart';
-// import 'main.dart';
 
 class ForgotPage extends StatefulWidget {
   @override
@@ -16,7 +12,7 @@ class ForgotPage extends StatefulWidget {
 }
 
 class _ForgotPageState extends State<ForgotPage> {
-  final GlobalKey<FormState> _formkey=GlobalKey<FormState>();
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool _isLoading = false;
 
   @override
@@ -28,7 +24,7 @@ class _ForgotPageState extends State<ForgotPage> {
           child: _isLoading
               ? Center(child: CircularProgressIndicator())
               : Form(
-                key: _formkey,
+                  key: _formkey,
                   child: ListView(
                     children: <Widget>[
                       headerSection(),
@@ -53,8 +49,6 @@ class _ForgotPageState extends State<ForgotPage> {
       });
       return null;
     }
-    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // print(email);
     Map data = {'user_name': email};
 
     var response = await http.post(apiUrl + "forgot-password", body: data);
@@ -101,7 +95,7 @@ class _ForgotPageState extends State<ForgotPage> {
           margin: EdgeInsets.only(top: 15.0),
           child: RaisedButton(
             onPressed: () {
-              if(!_formkey.currentState.validate()){
+              if (!_formkey.currentState.validate()) {
                 return;
               }
               setState(() {
@@ -112,7 +106,6 @@ class _ForgotPageState extends State<ForgotPage> {
             elevation: 0.0,
             color: Colors.black,
             child: Text("HENTE PASSORD", style: TextStyle(color: Colors.white)),
-            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           ),
         ),
         SizedBox(height: 10),
@@ -152,8 +145,8 @@ class _ForgotPageState extends State<ForgotPage> {
             controller: emailController,
             cursorColor: Colors.black,
             style: TextStyle(color: Colors.black),
-            validator: (String value){
-              if(value.isEmpty){
+            validator: (String value) {
+              if (value.isEmpty) {
                 return "brukernavn kreves";
               }
               return null;

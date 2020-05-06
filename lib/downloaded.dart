@@ -1,11 +1,11 @@
 
-import './widgets/downloaded_page.dart';
-import './widgets/globdig_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'widgets/downloaded_page.dart';
 
-import './models/magazines.dart';
-import './login.dart';
+import 'widgets/globdig_drawer.dart';
+import 'models/magazines.dart';
+import 'login.dart';
 
 class DownloadedPage extends StatefulWidget {
   @override

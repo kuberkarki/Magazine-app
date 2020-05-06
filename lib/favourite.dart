@@ -1,8 +1,7 @@
-import './widgets/favourite_page.dart';
-import './widgets/globdig_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import './widgets/favourite_page.dart';
+import './widgets/globdig_drawer.dart';
 import './models/magazines.dart';
 import './login.dart';
 

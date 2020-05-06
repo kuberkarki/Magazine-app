@@ -19,20 +19,6 @@ class _MyMagazinePageState extends State<MyMagazinePage> {
         centerTitle: false,
         title: Text(APPNAME,
             style: TextStyle(color: Colors.black), textAlign: TextAlign.right),
-        // actions: <Widget>[
-        //   FlatButton(
-        //     onPressed: () async {
-        //       var apiProvider = MagazineApiProvider();
-        //       await apiProvider.getAllMagazines();
-        //       // var mag1 = await DBProvider.db.getAllMagazines();
-        //       mag1 = await DBProvider.db.getAllMagazines();
-        //       setState(() {
-        //         mag = mag1;
-        //       });
-        //     },
-        //     child: Text("Refresh", style: TextStyle(color: Colors.black)),
-        //   ),
-        // ],
       ),
       body: MagazinePage(),
       drawer: GlobDigDrawer(),

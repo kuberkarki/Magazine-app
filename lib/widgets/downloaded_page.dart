@@ -1,9 +1,7 @@
-// import '../providers/magazine_api_provider.dart';
-import '../services/db_provider.dart';
-
-import '../models/magazines.dart';
 import 'package:flutter/material.dart';
 
+import '../services/db_provider.dart';
+import '../models/magazines.dart';
 import 'magazine_card.dart';
 
 class DownloadedPageWidget extends StatefulWidget {
@@ -28,31 +26,6 @@ class _DownloadedPageWidgetState extends State<DownloadedPageWidget> {
     });
   }
 
-  // Future<void> _launchInBrowser(String url) async {
-  //   if (await canLaunch(url)) {
-  //     await launch(
-  //       url,
-  //       forceSafariVC: false,
-  //       forceWebView: false,
-  //       headers: <String, String>{'my_header_key': 'my_header_value'},
-  //     );
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // Future<void> _launchInWebViewWithJavaScript(String url) async {
-  //   if (await canLaunch(url)) {
-  //     await launch(
-  //       url,
-  //       forceSafariVC: true,
-  //       forceWebView: true,
-  //       enableJavaScript: true,
-  //     );
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
   @override
   Widget build(BuildContext context) {
     return Center(

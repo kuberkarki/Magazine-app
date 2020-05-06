@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:LEDERNYTT/common/config.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:http/http.dart' as http;
 
 class ChangePasswordPage extends StatefulWidget {
@@ -29,10 +27,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }
 
   getuserdetail() async {
-    // sharedPreferences = await SharedPreferences.getInstance();
-
     setState(() {
-      // token = sharedPreferences.getString("token");
       _isLoading = false;
     });
   }
@@ -49,7 +44,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       return null;
     }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // print(email);
     Map data = {
       'old-password': oldPassword,
       'new-password': newPassword,

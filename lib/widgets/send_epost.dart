@@ -1,11 +1,10 @@
 import 'dart:convert';
-
-import 'package:LEDERNYTT/common/config.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:http/http.dart' as http;
+
+import '../common/config.dart';
 
 class SendEpostPage extends StatefulWidget {
   const SendEpostPage({Key key}) : super(key: key);
@@ -23,7 +22,7 @@ class _SendEpostPageState extends State<SendEpostPage> {
   void initState() {
     super.initState();
     checkLoginStatus();
-    _isLoading=false;
+    _isLoading = false;
   }
 
   checkLoginStatus() async {
@@ -42,9 +41,11 @@ class _SendEpostPageState extends State<SendEpostPage> {
       return null;
     }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // print(email);
-    Map data = {'subject': subject, 'message': content,'token':sharedPreferences.getString("token")};
-   
+    Map data = {
+      'subject': subject,
+      'message': content,
+      'token': sharedPreferences.getString("token")
+    };
 
     var response = await http.post(apiUrl + "email-us", body: data);
 
@@ -72,7 +73,6 @@ class _SendEpostPageState extends State<SendEpostPage> {
 
         return null;
       }
-     
     } else {
       setState(() {
         _isLoading = false;
@@ -80,7 +80,6 @@ class _SendEpostPageState extends State<SendEpostPage> {
       print(response.body);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,24 +97,22 @@ class _SendEpostPageState extends State<SendEpostPage> {
       ),
       body: Container(
         child: _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : Form(
-                  key: _formkey,
-                  child: ListView(
-                    children: <Widget>[
-                      headerSection(),
-                      textSection(),
-                      buttonSection(),
-                    ],
-                  ),
+            ? Center(child: CircularProgressIndicator())
+            : Form(
+                key: _formkey,
+                child: ListView(
+                  children: <Widget>[
+                    headerSection(),
+                    textSection(),
+                    buttonSection(),
+                  ],
                 ),
-        ),
-      
-      
+              ),
+      ),
     );
   }
 
-   Widget buttonSection() {
+  Widget buttonSection() {
     return Column(
       children: [
         Container(
@@ -126,8 +123,8 @@ class _SendEpostPageState extends State<SendEpostPage> {
           child: RaisedButton(
             onPressed: () {
               if (!_formkey.currentState.validate()) {
-              return;
-            }
+                return;
+              }
               setState(() {
                 _isLoading = true;
               });
@@ -136,10 +133,9 @@ class _SendEpostPageState extends State<SendEpostPage> {
             elevation: 0.0,
             color: Colors.black,
             child: Text("SENDE", style: TextStyle(color: Colors.white)),
-            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           ),
         ),
-        ],
+      ],
     );
   }
 
@@ -192,7 +188,6 @@ class _SendEpostPageState extends State<SendEpostPage> {
     return Container(
       margin: EdgeInsets.only(top: 50.0),
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      
     );
   }
 }

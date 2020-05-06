@@ -1,11 +1,9 @@
 
 import 'package:LEDERNYTT/services/db_provider.dart';
 
-// import 'downloaded_page.dart';
 import '../widgets/globdig_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/magazines.dart';
 import '../login.dart';
 import 'magazine_min_card.dart';

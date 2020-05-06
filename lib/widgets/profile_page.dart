@@ -1,11 +1,10 @@
 import 'dart:convert';
-
-import 'package:LEDERNYTT/common/config.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:http/http.dart' as http;
+
+import '../common/config.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -36,14 +35,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   getuserdetail() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    // print(sharedPreferences.getString("token"));
     Map data = {'token': sharedPreferences.getString("token")};
     var response =
         await http.post(apiUrl + "get-user-detail-by-token", body: data);
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
-      // print(jsonResponse);
       if (jsonResponse['status'] == 'error') {
         Fluttertoast.showToast(
           msg: jsonResponse['message'],
@@ -74,8 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  updateProfile(String name, String company, String address_1, 
-      String postalCode,String city, String email) async {
+  updateProfile(String name, String company, String address_1,
+      String postalCode, String city, String email) async {
     if (await checkInternet() == false) {
       Fluttertoast.showToast(
         msg: "Sjekk Internettforbindelse",
@@ -87,7 +84,6 @@ class _ProfilePageState extends State<ProfilePage> {
       return null;
     }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // print(email);
     Map data = {
       'name': name,
       'company': company,
@@ -248,7 +244,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return null;
             },
             decoration: InputDecoration(
-               icon: Icon(Icons.work, color: Colors.grey),
+              icon: Icon(Icons.work, color: Colors.grey),
               hintText: "Firma",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
@@ -292,7 +288,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 20.0),
           TextFormField(
-            
             controller: cityController,
             cursorColor: Colors.black,
             style: TextStyle(color: Colors.black),

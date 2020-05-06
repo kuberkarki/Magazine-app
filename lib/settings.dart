@@ -1,8 +1,8 @@
-import 'package:LEDERNYTT/widgets/manage_download_page.dart';
-import 'package:LEDERNYTT/widgets/send_epost.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'widgets/manage_download_page.dart';
+import 'widgets/send_epost.dart';
 import 'login.dart';
 import 'widgets/change_password_page.dart';
 import 'widgets/globdig_drawer.dart';
@@ -16,8 +16,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  SharedPreferences sharedPreferences ;
-   @override
+  SharedPreferences sharedPreferences;
+  @override
   void initState() {
     super.initState();
     checkLoginStatus();
@@ -25,7 +25,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   checkLoginStatus() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    
   }
 
   @override
@@ -38,72 +37,64 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Container(
         padding: EdgeInsets.all(30),
-        child: ListView(
-          children:[
-            _createSettingsItem(
-                icon: Icons.message,
-                text: 'Send oss epost',
-                onTap: () {
-                  
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => SendEpostPage()));
-                }),
-                _createSettingsItem(
-                icon: Icons.person,
-                text: 'Profil',
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => ProfilePage()));
-                }),
-                _createSettingsItem(
-                icon: Icons.lock,
-                text: 'Endre passord',
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => ChangePasswordPage()));
-                }),
-                _createSettingsItem(
-                icon: Icons.cloud_download,
-                text: 'Administrer nedlastinger',
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => ManageDownloadPage()));
-                }),
-             _createSettingsItem(
-                icon: Icons.exit_to_app,
-                text: 'Logg ut',
-                onTap: () {
-
-                  sharedPreferences.clear();
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginPage()),
-                      (Route<dynamic> route) => false);
-                }),
-          ]
-        ),
+        child: ListView(children: [
+          _createSettingsItem(
+              icon: Icons.message,
+              text: 'Send oss epost',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => SendEpostPage()));
+              }),
+          _createSettingsItem(
+              icon: Icons.person,
+              text: 'Profil',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => ProfilePage()));
+              }),
+          _createSettingsItem(
+              icon: Icons.lock,
+              text: 'Endre passord',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => ChangePasswordPage()));
+              }),
+          _createSettingsItem(
+              icon: Icons.cloud_download,
+              text: 'Administrer nedlastinger',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => ManageDownloadPage()));
+              }),
+          _createSettingsItem(
+              icon: Icons.exit_to_app,
+              text: 'Logg ut',
+              onTap: () {
+                sharedPreferences.clear();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LoginPage()),
+                    (Route<dynamic> route) => false);
+              }),
+        ]),
       ),
       drawer: GlobDigDrawer(),
     );
   }
 
-    Widget _createSettingsItem(
-    {IconData icon, String text, GestureTapCallback onTap}) {
-  return ListTile(
-    title: Row(
-      children: <Widget>[
-        Icon(icon),
-        Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(text),
-        )
-      ],
-    ),
-    onTap: onTap,
-  );
-}
+  Widget _createSettingsItem(
+      {IconData icon, String text, GestureTapCallback onTap}) {
+    return ListTile(
+      title: Row(
+        children: <Widget>[
+          Icon(icon),
+          Padding(
+            padding: EdgeInsets.only(left: 8.0),
+            child: Text(text),
+          )
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
 }

@@ -1,13 +1,9 @@
 import 'dart:io';
-
-
-import '../models/magazines.dart';
 import 'package:path/path.dart';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-// import 'magazines_repo.dart';
+import '../models/magazines.dart';
 
 class DBProvider {
   static Database _database;
@@ -79,9 +75,8 @@ class DBProvider {
     return res;
   }
 
-   // LikeUnlike Magazine on database
+  // LikeUnlike Magazine on database
   createDownloaded(int id, int isDownloaded) async {
-    // await deleteAllMagazines();
     final db = await database;
     var res;
     var magDetail = <String, dynamic>{
@@ -103,12 +98,9 @@ class DBProvider {
   // Insert Magazine on database
   createMagazine(Magazine newMagazine) async {
     await deleteAllMagazines();
-    // print();
-    // if(newMagazine.toJson()['id']==null)
-    //   return null;
-    // await deleteAllMagazines();
+
     final db = await database;
-    var json=newMagazine.toJson();
+    var json = newMagazine.toJson();
     // json.removeWhere((key, value) => key == "isLiked");
     // json.removeWhere((key, value) => key == "isDownloaded");
     final res = await db.insert('Magazine', json);
@@ -126,34 +118,42 @@ class DBProvider {
 
   Future<List<Magazine>> getAllMagazines() async {
     final db = await database;
-    var res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked as isLiked,MagazineDetail.isDownloaded as isDownloaded,Magazine.article,Magazine.content FROM Magazine LEFT JOIN MagazineDetail ON Magazine.id=MagazineDetail.id ORDER BY Magazine.id DESC");
+    var res = await db.rawQuery(
+        "SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked as isLiked,MagazineDetail.isDownloaded as isDownloaded,Magazine.article,Magazine.content FROM Magazine LEFT JOIN MagazineDetail ON Magazine.id=MagazineDetail.id ORDER BY Magazine.id DESC");
     // print(res.length);
-    if(res.length==0){ // TODO:Don't know why it didn't show while I just insert so I called it again
-      res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked as isLiked,MagazineDetail.isDownloaded as isDownloaded,Magazine.article,Magazine.content FROM Magazine LEFT JOIN MagazineDetail ON Magazine.id=MagazineDetail.id ORDER BY Magazine.id DESC");
-
+    if (res.length == 0) {
+      // TODO:Don't know why it didn't show while I just insert so I called it again
+      res = await db.rawQuery(
+          "SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked as isLiked,MagazineDetail.isDownloaded as isDownloaded,Magazine.article,Magazine.content FROM Magazine LEFT JOIN MagazineDetail ON Magazine.id=MagazineDetail.id ORDER BY Magazine.id DESC");
     }
     // List<Magazine> list = res.isNotEmpty ? await MagazinesRepo.getMagazines() : [];
-    List<Magazine> list = res.isNotEmpty ?res.map((c) => Magazine.fromJsonWithDetal(c)).toList() : [];
-    
+    List<Magazine> list = res.isNotEmpty
+        ? res.map((c) => Magazine.fromJsonWithDetal(c)).toList()
+        : [];
 
     return list;
   }
 
   Future<List<Magazine>> getFavouriteMagazines() async {
     final db = await database;
-    final res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked,MagazineDetail.isDownloaded,Magazine.article,Magazine.content FROM Magazine JOIN MagazineDetail ON Magazine.id=MagazineDetail.id AND isLiked=1 ORDER BY Magazine.id DESC");
+    final res = await db.rawQuery(
+        "SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked,MagazineDetail.isDownloaded,Magazine.article,Magazine.content FROM Magazine JOIN MagazineDetail ON Magazine.id=MagazineDetail.id AND isLiked=1 ORDER BY Magazine.id DESC");
 
-       List<Magazine> list = res.isNotEmpty ?res.map((c) => Magazine.fromJsonWithDetal(c)).toList() : [];
-
+    List<Magazine> list = res.isNotEmpty
+        ? res.map((c) => Magazine.fromJsonWithDetal(c)).toList()
+        : [];
 
     return list;
   }
 
   Future<List<Magazine>> getDownloadedMagazines() async {
     final db = await database;
-    final res = await db.rawQuery("SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked,MagazineDetail.isDownloaded,Magazine.article,Magazine.content FROM Magazine JOIN MagazineDetail ON Magazine.id=MagazineDetail.id AND isDownloaded=1 ORDER BY Magazine.id DESC");
+    final res = await db.rawQuery(
+        "SELECT Magazine.id,Magazine.name,Magazine.image,Magazine.zip_file,Magazine.extracted_file,MagazineDetail.isLiked,MagazineDetail.isDownloaded,Magazine.article,Magazine.content FROM Magazine JOIN MagazineDetail ON Magazine.id=MagazineDetail.id AND isDownloaded=1 ORDER BY Magazine.id DESC");
 
-    List<Magazine> list = res.isNotEmpty ?res.map((c) => Magazine.fromJsonWithDetal(c)).toList() : [];
+    List<Magazine> list = res.isNotEmpty
+        ? res.map((c) => Magazine.fromJsonWithDetal(c)).toList()
+        : [];
 
     return list;
   }

@@ -1,7 +1,5 @@
 import '../services/db_provider.dart';
-
 import '../services/magazines_repo.dart';
-
 import '../models/Magazines.dart';
 
 class MagazineApiProvider {

@@ -64,7 +64,6 @@ class _MagazinePageState extends State<MagazinePage> {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-
     _refreshController.loadComplete();
   }
 
@@ -72,11 +71,6 @@ class _MagazinePageState extends State<MagazinePage> {
   void initState() {
     super.initState();
     getMagaginData();
-    // MagazinesRepo.getMagazines().then((magsFromServer) {
-    //   setState(() {
-    //     mag = magsFromServer;
-    //   });
-    // });
   }
 
   getMagaginData() async {
@@ -94,31 +88,6 @@ class _MagazinePageState extends State<MagazinePage> {
     });
   }
 
-  // Future<void> _launchInBrowser(String url) async {
-  //   if (await canLaunch(url)) {
-  //     await launch(
-  //       url,
-  //       forceSafariVC: false,
-  //       forceWebView: false,
-  //       headers: <String, String>{'my_header_key': 'my_header_value'},
-  //     );
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  // Future<void> _launchInWebViewWithJavaScript(String url) async {
-  //   if (await canLaunch(url)) {
-  //     await launch(
-  //       url,
-  //       forceSafariVC: true,
-  //       forceWebView: true,
-  //       enableJavaScript: true,
-  //     );
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:LEDERNYTT/forgot.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,7 +59,6 @@ class _LoginPageState extends State<LoginPage> {
       return null;
     }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // print(email);
     Map data = {'user_name': email, 'password': pass};
     if (email == 'kuber' && pass == 'karki') {
       setState(() {
@@ -139,7 +136,6 @@ class _LoginPageState extends State<LoginPage> {
             elevation: 0.0,
             color: Colors.black,
             child: Text("LOGG INN", style: TextStyle(color: Colors.white)),
-            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           ),
         ),
         SizedBox(height: 10),
