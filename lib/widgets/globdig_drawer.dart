@@ -1,3 +1,5 @@
+import 'package:LEDERNYTT/widgets/profile_page.dart';
+
 import '../favourite.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,6 +69,11 @@ class _GlobDigDrawerState extends State<GlobDigDrawer> {
             _createDrawerItem(
               icon: Icons.person,
               text: 'Min profil',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => ProfilePage()));
+              },
+
             ),
             _createDrawerItem(
               icon: Icons.settings,

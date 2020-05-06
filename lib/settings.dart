@@ -1,3 +1,4 @@
+import 'package:LEDERNYTT/widgets/manage_download_page.dart';
 import 'package:LEDERNYTT/widgets/send_epost.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,6 +64,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (BuildContext context) => ChangePasswordPage()));
+                }),
+                _createSettingsItem(
+                icon: Icons.cloud_download,
+                text: 'Administrer nedlastinger',
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => ManageDownloadPage()));
                 }),
              _createSettingsItem(
                 icon: Icons.exit_to_app,

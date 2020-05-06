@@ -74,8 +74,8 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  updateProfile(String name, String company, String address_1, String city,
-      String postalCode, String email) async {
+  updateProfile(String name, String company, String address_1, 
+      String postalCode,String city, String email) async {
     if (await checkInternet() == false) {
       Fluttertoast.showToast(
         msg: "Sjekk Internettforbindelse",
@@ -228,6 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return null;
             },
             decoration: InputDecoration(
+              icon: Icon(Icons.person, color: Colors.grey),
               hintText: "Navn",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
@@ -247,6 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return null;
             },
             decoration: InputDecoration(
+               icon: Icon(Icons.work, color: Colors.grey),
               hintText: "Firma",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
@@ -266,6 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return null;
             },
             decoration: InputDecoration(
+              icon: Icon(Icons.pin_drop, color: Colors.grey),
               hintText: "Adresse",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
@@ -279,6 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
             cursorColor: Colors.black,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
+              icon: Icon(Icons.home, color: Colors.grey),
               hintText: "Postnummer",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
@@ -288,10 +292,12 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 20.0),
           TextFormField(
+            
             controller: cityController,
             cursorColor: Colors.black,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
+              icon: Icon(Icons.location_city, color: Colors.grey),
               hintText: "City",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
@@ -312,6 +318,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return null;
             },
             decoration: InputDecoration(
+              icon: Icon(Icons.alternate_email, color: Colors.grey),
               hintText: "Epost",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
