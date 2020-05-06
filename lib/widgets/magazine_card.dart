@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/config.dart';
 // import '../helpers/dio_helper.dart';
@@ -29,9 +30,19 @@ class MagazineCard extends StatefulWidget {
 
 class _MagazineCardState extends State<MagazineCard> {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+   SharedPreferences sharedPreferences ;
   final Magazine mag;
   String _dir;
+  @override
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
 
+
+checkLoginStatus() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
   _MagazineCardState(this.mag);
   @override
   Widget build(BuildContext context) {
@@ -200,7 +211,7 @@ class _MagazineCardState extends State<MagazineCard> {
                                       builder: (context) => WebView(
                                             selectedUrl: Uri.encodeFull(
                                                 mag.extractedFile +
-                                                    '?token=kuberkarki1'),
+                                                    '?token'+sharedPreferences.getString("token")),
                                             title: mag.name,
                                           )),
                                 );

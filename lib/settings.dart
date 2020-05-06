@@ -1,3 +1,4 @@
+import 'package:LEDERNYTT/widgets/send_epost.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   
                   Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (BuildContext context) => SettingsPage()));
+                          builder: (BuildContext context) => SendEpostPage()));
                 }),
                 _createSettingsItem(
                 icon: Icons.person,
