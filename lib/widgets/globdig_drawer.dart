@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../downloaded.dart';
 import '../login.dart';
 import '../main.dart';
+import '../settings.dart';
 
 class GlobDigDrawer extends StatefulWidget {
   @override
@@ -12,20 +13,20 @@ class GlobDigDrawer extends StatefulWidget {
 }
 
 class _GlobDigDrawerState extends State<GlobDigDrawer> {
-  SharedPreferences sharedPreferences ;
+  // SharedPreferences sharedPreferences ;
 
-    @override
-  void initState() {
-    super.initState();
-    checkLoginStatus();
-  }
+  //   @override
+  // void initState() {
+  //   super.initState();
+  //   checkLoginStatus();
+  // }
 
 
 
-  checkLoginStatus() async {
-    sharedPreferences = await SharedPreferences.getInstance();
+  // checkLoginStatus() async {
+  //   sharedPreferences = await SharedPreferences.getInstance();
     
-  }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,17 +71,21 @@ class _GlobDigDrawerState extends State<GlobDigDrawer> {
             _createDrawerItem(
               icon: Icons.settings,
               text: 'Innstillinger',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => SettingsPage()));
+              },
             ),
-            _createDrawerItem(
-                icon: Icons.exit_to_app,
-                text: 'Logg ut',
-                onTap: () {
-                  sharedPreferences.clear();
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginPage()),
-                      (Route<dynamic> route) => false);
-                }),
+            // _createDrawerItem(
+            //     icon: Icons.exit_to_app,
+            //     text: 'Logg ut',
+            //     onTap: () {
+            //       sharedPreferences.clear();
+            //       Navigator.of(context).pushAndRemoveUntil(
+            //           MaterialPageRoute(
+            //               builder: (BuildContext context) => LoginPage()),
+            //           (Route<dynamic> route) => false);
+            //     }),
           ],
         ),
       );
