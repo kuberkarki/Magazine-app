@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
+import 'widgets/change_password_page.dart';
 import 'widgets/globdig_drawer.dart';
 import 'widgets/profile_page.dart';
 
@@ -59,13 +60,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icons.lock,
                 text: 'Endre passord',
                 onTap: () {
-                  SharedPreferences sharedPreferences ;
-
-                  sharedPreferences.clear();
-                  Navigator.of(context).pushAndRemoveUntil(
+                  Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (BuildContext context) => LoginPage()),
-                      (Route<dynamic> route) => false);
+                          builder: (BuildContext context) => ChangePasswordPage()));
                 }),
              _createSettingsItem(
                 icon: Icons.exit_to_app,

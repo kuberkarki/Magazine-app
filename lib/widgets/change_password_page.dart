@@ -7,75 +7,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key key}) : super(key: key);
+class ChangePasswordPage extends StatefulWidget {
+  const ChangePasswordPage({Key key}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
   SharedPreferences sharedPreferences;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool _isLoading = false;
-  var _user;
-  TextEditingController nameController;
-  TextEditingController companyController;
-  TextEditingController address_1Controller;
-  TextEditingController postalCodeController;
-  TextEditingController cityController;
-  TextEditingController emailController;
+  bool passwordVisible;
 
   @override
   void initState() {
     super.initState();
     getuserdetail();
-
+    passwordVisible = true;
     _isLoading = false;
   }
 
   getuserdetail() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    // print(sharedPreferences.getString("token"));
-    Map data = {'token': sharedPreferences.getString("token")};
-    var response =
-        await http.post(apiUrl + "get-user-detail-by-token", body: data);
+    // sharedPreferences = await SharedPreferences.getInstance();
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      // print(jsonResponse);
-      if (jsonResponse['status'] == 'error') {
-        Fluttertoast.showToast(
-          msg: jsonResponse['message'],
-          toastLength: Toast.LENGTH_LONG,
-        );
-        setState(() {
-          _user = null;
-          _isLoading = false;
-        });
-      }
-      if (jsonResponse['status'] == 'ok') {
-        setState(() {
-          _isLoading = false;
-          _user = jsonResponse['data'];
-          print(jsonResponse['data']['name']);
-          nameController = new TextEditingController(text: _user['name']);
-          companyController = new TextEditingController(text: _user['company']);
-          address_1Controller =
-              new TextEditingController(text: _user['address_1']);
-          postalCodeController =
-              new TextEditingController(text: _user['postal_code']);
-          cityController = new TextEditingController(text: _user['city']);
-          emailController = new TextEditingController(text: _user['email']);
-        });
-
-        return null;
-      }
-    }
+    setState(() {
+      // token = sharedPreferences.getString("token");
+      _isLoading = false;
+    });
   }
 
-  updateProfile(String name, String company, String address_1, String city,
-      String postalCode, String email) async {
+  changePassword(String oldPassword, String newPassword) async {
     if (await checkInternet() == false) {
       Fluttertoast.showToast(
         msg: "Sjekk Internettforbindelse",
@@ -89,16 +51,12 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // print(email);
     Map data = {
-      'name': name,
-      'company': company,
-      'address_1': address_1,
-      'postal_code': postalCode,
-      'city': city,
-      'email': email,
+      'old-password': oldPassword,
+      'new-password': newPassword,
       'token': sharedPreferences.getString("token")
     };
 
-    var response = await http.post(apiUrl + "update-my-profile", body: data);
+    var response = await http.post(apiUrl + "change-password", body: data);
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
@@ -143,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         ),
         centerTitle: false,
-        title: Text("Profil",
+        title: Text("Endre Passord",
             style: TextStyle(color: Colors.black), textAlign: TextAlign.right),
       ),
       body: Container(
@@ -181,17 +139,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   setState(() {
                     _isLoading = true;
                   });
-                  updateProfile(
-                      nameController.text,
-                      companyController.text,
-                      address_1Controller.text,
-                      postalCodeController.text,
-                      cityController.text,
-                      emailController.text);
+                  changePassword(
+                    oldPasswordController.text,
+                    newPasswordController.text,
+                  );
                 },
                 elevation: 0.0,
                 color: Colors.black,
-                child: Text("OPPDATER", style: TextStyle(color: Colors.white)),
+                child: Text("ENDRE PASSORD",
+                    style: TextStyle(color: Colors.white)),
               ),
               SizedBox(
                 width: 10,
@@ -212,111 +168,117 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  final TextEditingController oldPasswordController =
+      new TextEditingController();
+  final TextEditingController newPasswordController =
+      new TextEditingController();
+  final TextEditingController confirmPasswordController =
+      new TextEditingController();
+
   Container textSection() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
       child: Column(
         children: <Widget>[
           TextFormField(
-            controller: nameController,
+            controller: oldPasswordController,
             cursorColor: Colors.black,
+            obscureText: passwordVisible,
             style: TextStyle(color: Colors.black),
             validator: (String value) {
               if (value.isEmpty) {
-                return "Navn kreves";
+                return "Nåværende passord kreves";
               }
               return null;
             },
             decoration: InputDecoration(
-              hintText: "Navn",
+              hintText: "Nåværende passord",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
               hintStyle:
                   TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  // Based on passwordVisible state choose the icon
+                  passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.black26,
+                ),
+                onPressed: () {
+                  // Update the state i.e. toogle the state of passwordVisible variable
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
+              ),
             ),
           ),
           SizedBox(height: 20.0),
           TextFormField(
-            controller: companyController,
+            controller: newPasswordController,
+            obscureText: passwordVisible,
             cursorColor: Colors.black,
             style: TextStyle(color: Colors.black),
             validator: (String value) {
               if (value.isEmpty) {
-                return "Firma kreves";
+                return "Nytt passord kreves";
               }
               return null;
             },
             decoration: InputDecoration(
-              hintText: "Firma",
+              hintText: "Nytt passord",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
               hintStyle:
                   TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  // Based on passwordVisible state choose the icon
+                  passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.black26,
+                ),
+                onPressed: () {
+                  // Update the state i.e. toogle the state of passwordVisible variable
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
+              ),
             ),
           ),
           SizedBox(height: 20.0),
           TextFormField(
-            controller: address_1Controller,
+            controller: confirmPasswordController,
+            obscureText: passwordVisible,
             cursorColor: Colors.black,
             style: TextStyle(color: Colors.black),
             validator: (String value) {
               if (value.isEmpty) {
-                return "Adresse kreves";
+                return "Gjenta nytt kreves";
+              }
+              if (value != newPasswordController.text) {
+                return "nye passord er ikke like";
               }
               return null;
             },
             decoration: InputDecoration(
-              hintText: "Adresse",
+              hintText: "Gjente nytt passord",
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white70)),
               hintStyle:
                   TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
-            ),
-          ),
-          SizedBox(height: 20.0),
-          TextFormField(
-            controller: postalCodeController,
-            cursorColor: Colors.black,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              hintText: "Postnummer",
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white70)),
-              hintStyle:
-                  TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
-            ),
-          ),
-          SizedBox(height: 20.0),
-          TextFormField(
-            controller: cityController,
-            cursorColor: Colors.black,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              hintText: "City",
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white70)),
-              hintStyle:
-                  TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
-            ),
-          ),
-          SizedBox(height: 20.0),
-          TextFormField(
-            controller: emailController,
-            enabled: false,
-            cursorColor: Colors.black,
-            style: TextStyle(color: Colors.black),
-            validator: (String value) {
-              if (value.isEmpty) {
-                return "Epost kreves";
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-              hintText: "Epost",
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white70)),
-              hintStyle:
-                  TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  // Based on passwordVisible state choose the icon
+                  passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.black26,
+                ),
+                onPressed: () {
+                  // Update the state i.e. toogle the state of passwordVisible variable
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
+              ),
             ),
           ),
         ],

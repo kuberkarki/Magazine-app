@@ -18,6 +18,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool _isLoading = false;
+  bool passwordVisible;
+
+  @override
+  void initState() {
+    super.initState();
+    passwordVisible = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +129,8 @@ class _LoginPageState extends State<LoginPage> {
           child: RaisedButton(
             onPressed: () {
               if (!_formkey.currentState.validate()) {
-              return;
-            }
+                return;
+              }
               setState(() {
                 _isLoading = true;
               });
@@ -138,7 +145,6 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () async {
-           
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (BuildContext context) => ForgotPage()),
@@ -193,12 +199,13 @@ class _LoginPageState extends State<LoginPage> {
           TextFormField(
             controller: passwordController,
             cursorColor: Colors.black,
-            obscureText: true,
+            obscureText: passwordVisible,
             style: TextStyle(color: Colors.black),
-            validator: (String value){
-              if(value.isEmpty){
+            validator: (String value) {
+              if (value.isEmpty) {
                 return "Passord kreves";
-              } return null;
+              }
+              return null;
             },
             decoration: InputDecoration(
               icon: Icon(Icons.lock, color: Colors.grey),
@@ -207,6 +214,19 @@ class _LoginPageState extends State<LoginPage> {
                   borderSide: BorderSide(color: Colors.white70)),
               hintStyle:
                   TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  // Based on passwordVisible state choose the icon
+                  passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.black26,
+                ),
+                onPressed: () {
+                  // Update the state i.e. toogle the state of passwordVisible variable
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
+              ),
             ),
           ),
         ],
