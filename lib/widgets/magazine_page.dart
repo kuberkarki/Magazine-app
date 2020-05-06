@@ -130,14 +130,15 @@ class _MagazinePageState extends State<MagazinePage> {
             hintText: 'Soke...',
           ),
           onChanged: (string) {
+            print(string);
             _debouncer.run(() {
               setState(() {
                 filteredmag = mag
                     .where((u) => (u.name
                             .toLowerCase()
                             .contains(string.toLowerCase()) ||
-                        u.article.toLowerCase().contains(string.toLowerCase()) ||
-                        (u.content!=null && u.content.toLowerCase().contains(string.toLowerCase()))
+                        u.article.toLowerCase().contains(string.toLowerCase()) 
+                        //  || ( u.content.toLowerCase().contains(string.toLowerCase()))
                         ))
                     .toList();
               });

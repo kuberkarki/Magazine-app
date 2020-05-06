@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool _isLoading = false;
 
   @override
@@ -26,12 +27,15 @@ class _LoginPageState extends State<LoginPage> {
           width: 300,
           child: _isLoading
               ? Center(child: CircularProgressIndicator())
-              : ListView(
-                  children: <Widget>[
-                    headerSection(),
-                    textSection(),
-                    buttonSection(),
-                  ],
+              : Form(
+                  key: _formkey,
+                  child: ListView(
+                    children: <Widget>[
+                      headerSection(),
+                      textSection(),
+                      buttonSection(),
+                    ],
+                  ),
                 ),
         ),
       ),
@@ -117,6 +121,9 @@ class _LoginPageState extends State<LoginPage> {
           margin: EdgeInsets.only(top: 15.0),
           child: RaisedButton(
             onPressed: () {
+              if (!_formkey.currentState.validate()) {
+              return;
+            }
               setState(() {
                 _isLoading = true;
               });
@@ -131,7 +138,8 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () async {
-             Navigator.of(context).pushAndRemoveUntil(
+           
+            Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (BuildContext context) => ForgotPage()),
                 (Route<dynamic> route) => false);
@@ -166,6 +174,12 @@ class _LoginPageState extends State<LoginPage> {
             controller: emailController,
             cursorColor: Colors.black,
             style: TextStyle(color: Colors.black),
+            validator: (String value) {
+              if (value.isEmpty) {
+                return "brukernavn kreves";
+              }
+              return null;
+            },
             decoration: InputDecoration(
               icon: Icon(Icons.person, color: Colors.grey),
               hintText: "brukernavn",
@@ -181,6 +195,11 @@ class _LoginPageState extends State<LoginPage> {
             cursorColor: Colors.black,
             obscureText: true,
             style: TextStyle(color: Colors.black),
+            validator: (String value){
+              if(value.isEmpty){
+                return "Passord kreves";
+              } return null;
+            },
             decoration: InputDecoration(
               icon: Icon(Icons.lock, color: Colors.grey),
               hintText: "Passord",

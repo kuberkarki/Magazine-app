@@ -16,6 +16,7 @@ class ForgotPage extends StatefulWidget {
 }
 
 class _ForgotPageState extends State<ForgotPage> {
+  final GlobalKey<FormState> _formkey=GlobalKey<FormState>();
   bool _isLoading = false;
 
   @override
@@ -26,12 +27,15 @@ class _ForgotPageState extends State<ForgotPage> {
           width: 300,
           child: _isLoading
               ? Center(child: CircularProgressIndicator())
-              : ListView(
-                  children: <Widget>[
-                    headerSection(),
-                    textSection(),
-                    buttonSection(),
-                  ],
+              : Form(
+                key: _formkey,
+                  child: ListView(
+                    children: <Widget>[
+                      headerSection(),
+                      textSection(),
+                      buttonSection(),
+                    ],
+                  ),
                 ),
         ),
       ),
@@ -97,6 +101,9 @@ class _ForgotPageState extends State<ForgotPage> {
           margin: EdgeInsets.only(top: 15.0),
           child: RaisedButton(
             onPressed: () {
+              if(!_formkey.currentState.validate()){
+                return;
+              }
               setState(() {
                 _isLoading = true;
               });
@@ -145,6 +152,12 @@ class _ForgotPageState extends State<ForgotPage> {
             controller: emailController,
             cursorColor: Colors.black,
             style: TextStyle(color: Colors.black),
+            validator: (String value){
+              if(value.isEmpty){
+                return "brukernavn kreves";
+              }
+              return null;
+            },
             decoration: InputDecoration(
               icon: Icon(Icons.person, color: Colors.grey),
               hintText: "brukernavn",
